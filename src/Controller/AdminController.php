@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Publication;
+use App\Form\PublicationType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AdminController extends AbstractController
@@ -18,9 +21,15 @@ class AdminController extends AbstractController
     /**
      * @Route("/create", name="app_create")
      */
-    public function create()
+    public function create(Request $request)
     {
-        return $this->render('admin/create.html.twig');
+        $publication=new Publication;
+        $form=$this->createForm(PublicationType::class,$publication);
+        $form->handleRequest($request);
+        return $this->render('admin/create.html.twig',[
+            'publication'=>$publication,
+            'form'=>$form->createView()
+        ]);
 
     }
 
