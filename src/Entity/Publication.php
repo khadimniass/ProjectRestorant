@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\PublicationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=PublicationRepository::class)
@@ -20,26 +21,30 @@ class Publication
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\NotBlank()
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=150)
+     *  @Assert\NotBlank()
      */
     private $description;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank(message="ce champ ne doit pas être vide")
+     * @Assert\Range(min="0")
      */
     private $price;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime",options={"default":"CURRENT_TIMESTAMP"})
      */
     private $createdAt;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime" ,options={"default":"CURRENT_TIMESTAMP"})
      */
     private $updatedAt;
 
@@ -107,4 +112,5 @@ class Publication
 
         return $this;
     }
+
 }
