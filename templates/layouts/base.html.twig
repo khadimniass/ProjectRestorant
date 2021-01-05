@@ -9,8 +9,9 @@
     </head>
     <body>
     {% include "layouts/partials/_nav.html.twig" %}
-        {% block body %}{% endblock %}
-
+        <main class="container" role="main">
+            {% block body %}{% endblock %}
+        </main>
 
 {% include "layouts/partials/_footer.html.twig" %}
         {% block javascripts %}

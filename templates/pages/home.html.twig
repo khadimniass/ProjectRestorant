@@ -4,4 +4,29 @@
 
 {% block body %}
     <h1 class="pl-5 pb-5 mb-6 text-center" >Welcome to our Home page</h1>
+
+        <div class="row md-5">
+            {% for publication in publications %}
+               <div>
+                    <article>
+                        </p>
+                            <a href="{{ path('app_show',{id:publication.id}) }}">
+                                {{ publication.title }}
+                            </a>   
+                        </p>
+
+                        <h2>
+                            
+                                {{ publication.price }}
+                            
+                        </h2>    
+
+                        <p>
+                            {{ publication.description }}
+                        </p>
+                    </article>
+               </div> 
+            {% endfor %}
+        </div>
+    
 {% endblock %}

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Entity;
-
+use App\Entity\Traits\Timestampable;
 use App\Repository\PublicationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -9,9 +9,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=PublicationRepository::class)
  * @ORM\Table(name="publications")
+ * @ORM\HasLifecycleCallbacks
  */
 class Publication
 {
+    use Timestampable;
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -37,16 +39,6 @@ class Publication
      * @Assert\Range(min="0")
      */
     private $price;
-
-    /**
-     * @ORM\Column(type="datetime",options={"default":"CURRENT_TIMESTAMP"})
-     */
-    private $createdAt;
-
-    /**
-     * @ORM\Column(type="datetime" ,options={"default":"CURRENT_TIMESTAMP"})
-     */
-    private $updatedAt;
 
     public function getId(): ?int
     {
@@ -85,30 +77,6 @@ class Publication
     public function setPrice(int $price): self
     {
         $this->price = $price;
-
-        return $this;
-    }
-
-    public function getCreatedAt(): ?\DateTimeInterface
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?\DateTimeInterface
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
 
         return $this;
     }
