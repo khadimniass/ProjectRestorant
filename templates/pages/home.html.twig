@@ -3,30 +3,31 @@
 {% block title 'bienvenue chez le meilleur restaurant dun Sénégal !' %}
 
 {% block body %}
-    <h1 class="pl-5 pb-5 mb-6 text-center" >Welcome to our Home page</h1>
+    <h1 class="h2 pl-5 pb-5 mb-6 text-info text-center" >Welcome to our Home page, le meilleur restaurant en ligne</h1>
 
         <div class="row md-5">
             {% for publication in publications %}
                <div>
                     <article>
-                        </p>
-                            <a href="{{ path('app_show',{id:publication.id}) }}">
-                                {{ publication.title }}
-                            </a>   
-                        </p>
+                        <div>
+                            <p>
+                                <a href="{{ path('app_show',{id:publication.id}) }}">
+                                    {{ publication.title }}
+                                </a>   
+                            </p>
 
-                        <h2>
-                            
-                                {{ publication.price }}
-                            
-                        </h2>    
+                            <h2>
+                                
+                                    {{ publication.price }}
+                                
+                            </h2>    
 
-                        <p>
-                            {{ publication.description }}
-                        </p>
+                            <p>
+                                {{ publication.description }}
+                            </p>
+                        </div>    
                     </article>
                </div> 
             {% endfor %}
         </div>
-    
 {% endblock %}
