@@ -7,6 +7,7 @@ use App\Form\PublicationType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AdminController extends AbstractController
@@ -44,11 +45,11 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/show", name="app_show")
+     * @Route("/show/{id<[0-9]+>}", name="app_show")
      */
-    public function show()
+    public function show(Publication $publication): Response
     {
-        return $this->render('admin/show.html.twig');
+        return $this->render('admin/show.html.twig',compact('publication'),);
 
     }    
 }

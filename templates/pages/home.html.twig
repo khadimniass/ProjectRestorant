@@ -4,30 +4,28 @@
 
 {% block body %}
     <h1 class="h2 pl-5 pb-5 mb-6 text-info text-center" >Welcome to our Home page, le meilleur restaurant en ligne</h1>
+    
 
-        <div class="row md-5">
-            {% for publication in publications %}
-               <div>
-                    <article>
-                        <div>
-                            <p>
-                                <a href="{{ path('app_show',{id:publication.id}) }}">
-                                    {{ publication.title }}
-                                </a>   
-                            </p>
 
-                            <h2>
-                                
-                                    {{ publication.price }}
-                                
-                            </h2>    
-
-                            <p>
-                                {{ publication.description }}
-                            </p>
-                        </div>    
-                    </article>
-               </div> 
-            {% endfor %}
-        </div>
+    {% for row in publications|batch(3) %}
+            <div class="row mb-5">
+                {% for publication in row %}
+                    <div class="col-md-4">
+                        <article class="publication bg-white rounded shadow">
+                        <div class="mw-100 rounded-top overflow-hidden">
+                            <a href="{{ path('app_show', {id:publication.id})}}">
+                                <img src="{{ (publication.imageName ? vich_uploader_asset(publication) :asset('build/images/ourlogo.jpg'))  | imagine_filter('squared_thumbnail_medium') }}"
+                                alt="{{ publication.title }}" class="w-100  .mb-2 .rounded .shadow .img-thumbnail "/>
+                            </a>
+                        </div>
+                        
+                        <h2 class="pl-3 pt-3 h5"> <a href="{{ path('app_show', {id:publication.id}) }}" class="text-secondary text-decoration-none"> {{ publication.title }}</a></h2>
+                            {#    <p>{{ pin.description}}</p>#}
+                            {# <p class="pl-3 pb-3 text-muted"><small>Submitted by {{publication.user.fullName }} </small></p> #}
+                            <p>Submitted {{publication.createdAt|ago }}</p>
+                        </article>
+                    </div>
+                {% endfor %}
+            </div>
+    {% endfor %}
 {% endblock %}

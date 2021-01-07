@@ -14,7 +14,7 @@ class PublicationType extends AbstractType
     {
         $builder
         ->add('imageFile', VichImageType::class, [
-            'label'=>'Image (JPG,PNG)',
+            'label'=>'Image du plat (JPG,PNG)',
             'required' => false,
             'allow_delete' => true,
             'download_label' => 'Téléccharger',

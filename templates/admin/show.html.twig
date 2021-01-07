@@ -1,6 +1,32 @@
 {% extends 'layouts/base.html.twig' %}
-
-{% block title '' %}
+{% block title publication.title %}
 
 {% block body %}
+    <h1 class="mt-2 mb-4 text-center">ACHETER VOTRE REPAS PREFERE </h1>
+    <div class="raw">
+        <div class="col-md-6 mx-auto">
+            <article class="pin bg-white rounded shadow">
+                <div class="mw-100 overflow-hidden rounded-top">
+                    <img src="{{ (publication.imageName ? vich_uploader_asset(publication) :asset('build/images/defaultImage.jpg'))  | imagine_filter('squared_thumbnail_medium') }}"
+                        alt="{{ publication.title }}" class="w-100 "/>
+
+                <div class="p-3 mb-2 comment">
+                    <div class="text-center pr-3 pt-3 text-break">
+                        {{ publication.description}}
+                    </div>
+                </div>
+                <div class="text-center">
+                    <a href="#" class="mt-2 text-center btn btn-success btn-block">
+                        acheter ce plat
+                    </a>
+                </div>    
+                </div>
+            <div class="alert alert-success mt-5 container" role="alert">
+                <h3 class="text-primary" style="font-weight:bold; font-size: 4rem">
+                    {{ publication.price | number_format(0, '', ' ') }} FCFA
+                </h3>
+            </div>
+            </article>
+        </div>
+    </div>
 {% endblock %}
