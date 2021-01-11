@@ -28,17 +28,16 @@
              {{ form_row(registrationForm.adress,{'attr':{'placeholder':'FANN RESIDANCE'}})}}
             </div>
         </div>
-                {{ form_row(registrationForm.email,{'attr':{'placeholder':"niassssn@gmail.com"}}) }}
         <div class="row">
+            <div class="col-md-6">
+                {{ form_row(registrationForm.email,{'attr':{'placeholder':"niassssn@gmail.com"}}) }}
+            </div>
             <div class="col-md-6">
                 {{ form_row(registrationForm.plainPassword,
                     {'attr':{'placeholder':"votre mot de pass"}},
                     {label: 'Password'})
                 }}
             </div>
-            {# <div class="col-md-6">
-                {{ form_row(registrationForm.confirmPassword,{'attr':{'placeholder':"Confirmation du mot de pass"}}) }}
-            </div> #}
         </div>
                 {{ form_row(registrationForm.agreeTerms) }}
 
