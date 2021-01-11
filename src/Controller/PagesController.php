@@ -15,7 +15,6 @@ class PagesController extends AbstractController
      */
     public function index(Request $request, PublicationRepository $publicationrepository)
     {
-
         $publications= $publicationrepository->findBy([],['createdAt'=>'DESC']);
         return $this->render('pages/home.html.twig', compact('publications'));
     }

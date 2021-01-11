@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\ContactUs;
 use App\Entity\Publication;
 use App\Form\PublicationType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -41,15 +42,21 @@ class AdminController extends AbstractController
             'publication'=>$publication,
             'form'=>$form->createView()
         ]);
-
     }
 
     /**
      * @Route("/show/{id<[0-9]+>}", name="app_show")
      */
-    public function show(Publication $publication): Response
+    public function show(Request $request, Publication $publication): Response
     {
-        return $this->render('admin/show.html.twig',compact('publication'),);
+        // $contact=new ContactUs();
+        // $formc=$this->createForm(ContactUs::class,$contact);
+        // $formc->handleRequest($request);
 
-    }    
+        return $this->render('admin/show.html.twig',compact('publication'),
+            // ['formc'=>$formc->createView()]
+
+    );
+
+    }
 }

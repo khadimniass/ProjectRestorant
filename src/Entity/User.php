@@ -2,15 +2,22 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\Timestampable;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ORM\Table(name="users")
+ * @ORM\HasLifecycleCallbacks
+ * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
 class User implements UserInterface
 {
+    use Timestampable;
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -20,6 +27,8 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\NotBlank()
+     * @Assert\Email(message="veillez entrez une addresse valide")
      */
     private $email;
 
@@ -33,24 +42,32 @@ class User implements UserInterface
      * @ORM\Column(type="string")
      */
     private $password;
+    /**
+     * @Assert\EqualTo(propertyPath="password",message="Vous n'avez pas tapé le même mot de passe")
+     */
+    public $confirmPassword;
 
     /**
      * @ORM\Column(type="string", length=30)
+     * @Assert\NotBlank()
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=40)
+     * @Assert\NotBlank()
      */
     private $lastName;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\NotBlank()
      */
     private $telephone;
 
     /**
      * @ORM\Column(type="string", length=150)
+     * @Assert\NotBlank()
      */
     private $adress;
 
@@ -69,6 +86,11 @@ class User implements UserInterface
         $this->email = $email;
 
         return $this;
+    }
+
+    public function getFullName(): string
+    {
+        return $this->getFirstName().' '.$this->getLastName();
     }
 
     /**
