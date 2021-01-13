@@ -45,7 +45,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/actionadmin/", name="app_action")
+     * @Route("/admin/action/", name="app_action")
      */
     public function action(PublicationRepository $publicationRepository): Response
     {
