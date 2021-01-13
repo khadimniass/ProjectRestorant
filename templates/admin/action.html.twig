@@ -9,11 +9,20 @@
             <theader>
                 <tr>
                     <th>Titre du plat</th>
+                    <th>Images</th>
                     <th>Actions</th>
                 </tr>
                 {% for publication in publications %}
                     <tr>
                         <td>{{ publication.title }}</td>
+
+                        <td>
+                            <div class="mw-100 rounded-top overflow-hidden">
+                                    <img src="{{ (publication.imageName ? vich_uploader_asset(publication) :asset('build/images/logos.jpg'))|imagine_filter('squared_thumbnail_small') }}"
+                                         alt="{{ publication.title }}" class="w-100 "/>
+                            </div>
+                        </td>
+
                         <td>
                             <a href="{{ path('app_edit', {id: publication.id}) }}" class="btn btn-info mt-5" >Editer</a>
                             <a href="#" onclick="event.preventDefault(); confirm('Veut-tu vraiment effacer ?')
@@ -23,7 +32,7 @@
 
                             <form id="js-delete-form" action="{{path('app_delete', {id: publication.id})}}"
                                   style="display: inline-block;">
-                                <input type="hidden" name="csrf_token" value="{{ csrf_token('category_deletion_'~publication.id) }}">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token('publication_deletion_'~publication.id) }}">
                                 <input type="hidden" name="_methode" value="DELETE">
                             </form>
                         </td>

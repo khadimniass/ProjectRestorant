@@ -22,7 +22,7 @@ class AdminController extends AbstractController
         return $this->render('admin/index.html.twig');}
 
     /**
-     * @Route("/create", name="app_create")
+     * @Route("/admin/create", name="app_create")
      */
     public function create(Request $request, EntityManagerInterface $em)
     {
@@ -45,7 +45,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/action", name="app_action")
+     * @Route("/actionadmin/", name="app_action")
      */
     public function action(PublicationRepository $publicationRepository): Response
     {
@@ -54,7 +54,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/show/{id<[0-9]+>}", name="app_show")
+     * @Route("/admin/show/{id<[0-9]+>}", name="app_show")
      */
     public function show(Request $request, Publication $publication): Response
     {
@@ -70,36 +70,33 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/{id<[0-9]+>}/edit", name="app_edit",methods={"GET","POST"})
+     * @Route("/admin/{id<[0-9]+>}/edit", name="app_edit",methods={"GET","POST"})
      */
-    public function edit(Request $request, EntityManagerInterface $em): Response
+    public function edit(Request $request, EntityManagerInterface $em, Publication $publication): Response
     {
-        $publication=new Publication;
-
         $form=$this->createForm(PublicationType::class, $publication);
-
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid() ) {
             $em->flush();
-            $this->addFlash('success','publication modifiée avec success.');
+            $this->addFlash('success','Publication modifié avec succès !');
             return $this->redirectToRoute('app_home');
         }
-
         return $this->render('admin/edit.html.twig',[
             'publication'=>$publication,
             'form'=>$form->createView()
         ]);
     }
+
     /**
-     * @Route("/{id<[0-9]+>}/delete", name="app_delete", methods={"GET","POST","DELETE"})
+     * @Route("/admin/{id<[0-9]+>}/delete", name="app_delete", methods={"GET"})
      */
     public function delete(Request $request, EntityManagerInterface $em, Publication $publication): Response
     {
-        if ($this->isCsrfTokenValid('category_deletion_'.$publication->getId(),$request->request->get('csrf_token')))
+        if ($this->isCsrfTokenValid('publication_deletion_'.$publication->getId(),$request->request->get('csrf_token')))
         {
             $em->remove($publication);
             $em->flush();
-            $this->addFlash('info','location supprimée avec succes ...');
+            $this->addFlash('info','publication supprimée avec succes ...');
         }
         return $this->redirectToRoute('app_home');
 
