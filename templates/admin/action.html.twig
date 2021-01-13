@@ -1,0 +1,35 @@
+{% extends 'layouts/base.html.twig' %}
+
+{% block title 'gerer les locations' %}
+
+{% block body %}
+    <div class="container mt-4 text-center">
+        <h1>gerer les locations</h1>
+        <table class="table table-striped">
+            <theader>
+                <tr>
+                    <th>Titre du plat</th>
+                    <th>Actions</th>
+                </tr>
+                {% for publication in publications %}
+                    <tr>
+                        <td>{{ publication.title }}</td>
+                        <td>
+                            <a href="{{ path('app_edit', {id: publication.id}) }}" class="btn btn-info mt-5" >Editer</a>
+                            <a href="#" onclick="event.preventDefault(); confirm('Veut-tu vraiment effacer ?')
+                    &&document.getElementById('js-delete-form').submit();"class="btn btn-danger d-inline-block">
+                                Delete
+                            </a>
+
+                            <form id="js-delete-form" action="{{path('app_delete', {id: publication.id})}}"
+                                  style="display: inline-block;">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token('category_deletion_'~publication.id) }}">
+                                <input type="hidden" name="_methode" value="DELETE">
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </theader>
+        </table>
+    </div>
+{% endblock %}

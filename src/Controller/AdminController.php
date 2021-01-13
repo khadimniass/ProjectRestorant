@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\ContactUs;
 use App\Entity\Publication;
 use App\Form\PublicationType;
+use App\Repository\PublicationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,8 +19,7 @@ class AdminController extends AbstractController
      */
     public function index()
     {
-        return $this->render('admin/index.html.twig');
-    }
+        return $this->render('admin/index.html.twig');}
 
     /**
      * @Route("/create", name="app_create")
@@ -45,6 +45,15 @@ class AdminController extends AbstractController
     }
 
     /**
+     * @Route("/action", name="app_action")
+     */
+    public function action(PublicationRepository $publicationRepository): Response
+    {
+        $publications=$publicationRepository->findAll();
+        return $this->render('admin/action.html.twig', compact('publications'));
+    }
+
+    /**
      * @Route("/show/{id<[0-9]+>}", name="app_show")
      */
     public function show(Request $request, Publication $publication): Response
@@ -53,10 +62,46 @@ class AdminController extends AbstractController
         // $formc=$this->createForm(ContactUs::class,$contact);
         // $formc->handleRequest($request);
 
-        return $this->render('admin/show.html.twig',compact('publication'),
+        return $this->render('admin/show.html.twig',compact('publication')
             // ['formc'=>$formc->createView()]
 
     );
+
+    }
+
+    /**
+     * @Route("/{id<[0-9]+>}/edit", name="app_edit",methods={"GET","POST"})
+     */
+    public function edit(Request $request, EntityManagerInterface $em): Response
+    {
+        $publication=new Publication;
+
+        $form=$this->createForm(PublicationType::class, $publication);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()){
+            $em->flush();
+            $this->addFlash('success','publication modifiée avec success.');
+            return $this->redirectToRoute('app_home');
+        }
+
+        return $this->render('admin/edit.html.twig',[
+            'publication'=>$publication,
+            'form'=>$form->createView()
+        ]);
+    }
+    /**
+     * @Route("/{id<[0-9]+>}/delete", name="app_delete", methods={"GET","POST","DELETE"})
+     */
+    public function delete(Request $request, EntityManagerInterface $em, Publication $publication): Response
+    {
+        if ($this->isCsrfTokenValid('category_deletion_'.$publication->getId(),$request->request->get('csrf_token')))
+        {
+            $em->remove($publication);
+            $em->flush();
+            $this->addFlash('info','location supprimée avec succes ...');
+        }
+        return $this->redirectToRoute('app_home');
 
     }
 }
